@@ -21,6 +21,8 @@ func (s *Server) Start() {
 
 	//开启一个goroutine做服务端Listener业务
 	go func() {
+		//启动worker工作池机制
+		s.msgHandler.StartWorkerPool()
 		//1 获取一个TCP的addr
 		addr, err := net.ResolveTCPAddr(s.IPVersion, fmt.Sprintf("%s:%d", s.IP, s.Port))
 		if err != nil {
@@ -34,7 +36,7 @@ func (s *Server) Start() {
 			fmt.Println("listen", s.IPVersion, " err ", err)
 			return
 		}
-		fmt.Println("start Zinx server ", s.Name, " success, now listening")
+		fmt.Println("start Zinx server [", s.Name, "] success, now listening")
 
 		//TODO server.go应该有个自动生成ID的方法
 		var cid uint32

@@ -3,5 +3,6 @@
   "host": "127.0.0.1",
   "port": 8889,
   "maxConn": 300,
-  "maxPacketSize": 2048
+  "maxPacketSize": 2048,
+  "workerPoolSize": 8
 }

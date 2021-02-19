@@ -32,7 +32,7 @@ func init() {
 }
 
 func (globalObj *GlobalObj) Reload() {
-	data, err := ioutil.ReadFile("v0.4/conf/zinx.json")
+	data, err := ioutil.ReadFile("v0.5/conf/zinx.json")
 	if err != nil {
 		panic(err)
 	}

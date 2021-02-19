@@ -14,6 +14,8 @@ type  GlobalObj struct {
 	Version string `json:"version"`
 	MaxPacketSize uint32 `json:"maxPacketSize"`
 	MaxConn int `json:"maxConn"`
+	WorkerPoolSize uint32 `json:"workerPoolSize"`
+	MaxWorkerTaskLen uint32 `json:"maxWorkerTaskLen"`
 }
 
 var GlobalObject *GlobalObj
@@ -27,12 +29,14 @@ func init() {
 		Version:       "V0.4",
 		MaxPacketSize: 4096,
 		MaxConn:       12000,
+		WorkerPoolSize: 8,
+		MaxWorkerTaskLen: 8,
 	}
 	GlobalObject.Reload()
 }
 
 func (globalObj *GlobalObj) Reload() {
-	data, err := ioutil.ReadFile("v0.4/conf/zinx.json")
+	data, err := ioutil.ReadFile("v0.6/conf/zinx.json")
 	if err != nil {
 		panic(err)
 	}

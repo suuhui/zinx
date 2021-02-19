@@ -3,6 +3,7 @@ package znet
 import (
 	"errors"
 	"fmt"
+	"github.com/suuhui/v0.6/utils"
 	"github.com/suuhui/v0.6/ziface"
 	"io"
 	"net"
@@ -70,7 +71,13 @@ func (c *Connection) StartReader() {
 		}
 		msg.SetData(data)
 		req := Request{conn: c, message: msg}
-		go c.MsgHandler.DoMessageHandler(&req)
+		//如果启动了工作池，则交由工作池处理
+		if utils.GlobalObject.WorkerPoolSize > 0 {
+			c.MsgHandler.SendRequestToTaskQueue(&req)
+		} else {
+			//否则直接使用绑定的处理方式处理
+			go c.MsgHandler.DoMessageHandler(&req)
+		}
 	}
 }
 
