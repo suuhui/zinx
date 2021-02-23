@@ -17,6 +17,12 @@ type IConnection interface {
 	SendMsg(msgId uint32, data []byte) error
 	//带缓冲 发送消息接口
 	SendBufMsg(msgId uint32, data []byte) error
+	//设置链接属性
+	SetProperty(key string, value interface{})
+	//获取链接属性
+	GetProperty(key string)(interface{}, error)
+	//移除链接属性
+	RemoveProperty(key string)
 }
 
 type HandleFunc func(*net.TCPConn, []byte, int) error

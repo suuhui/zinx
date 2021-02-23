@@ -32,8 +32,26 @@ func (hzr *HelloZinxRouter) Handle(request ziface.IRequest) {
 	}
 }
 
+func DoConnectionBegin(conn ziface.IConnection) {
+	fmt.Println("DoConnectionBegin is called...")
+	conn.SetProperty("Name", "zinx")
+	conn.SetProperty("Home", "https://www.jianshu.com/u/35261429b7f1")
+	err := conn.SendMsg(2, []byte("DoConnection Begin..."))
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func DoConnectionStop(conn ziface.IConnection) {
+	fmt.Println("DoConnectionStop is called...")
+	fmt.Println(conn.GetProperty("Name"))
+	fmt.Println(conn.GetProperty("Home"))
+}
+
 func main() {
 	server := znet.NewServer()
+	server.SetOnConnStart(DoConnectionBegin)
+	server.SetOnConnStop(DoConnectionStop)
 	server.AddRouter(0, &PingRouter{})
 	server.AddRouter(1, &HelloZinxRouter{})
 	server.Serve()

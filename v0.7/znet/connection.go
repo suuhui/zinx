@@ -7,6 +7,7 @@ import (
 	"github.com/suuhui/v0.7/ziface"
 	"io"
 	"net"
+	"sync"
 )
 
 type Connection struct {
@@ -26,18 +27,23 @@ type Connection struct {
 	msgChan chan []byte
 	//有缓冲管道，用于读写两个goroutine之间的消息通信
 	msgBufferChan chan []byte
+	//链接属性
+	property map[string]interface{}
+	//保护链接属性修改的锁
+	propertyLock sync.RWMutex
 }
 
 func NewConnection(server ziface.IServer, conn *net.TCPConn, connId uint32, msgHandler ziface.IMsgHandler) *Connection {
 	c := &Connection{
-		TcpServer: server,
-		Conn:         conn,
-		ConnID:       connId,
-		MsgHandler:   msgHandler,
-		isClosed:     false,
-		ExitBuffChan: make(chan bool),
-		msgChan:      make(chan []byte),
+		TcpServer:     server,
+		Conn:          conn,
+		ConnID:        connId,
+		MsgHandler:    msgHandler,
+		isClosed:      false,
+		ExitBuffChan:  make(chan bool),
+		msgChan:       make(chan []byte),
 		msgBufferChan: make(chan []byte, utils.GlobalObject.MaxMsgChanLen),
+		property: make(map[string]interface{}),
 	}
 	c.TcpServer.GetConnMgr().Add(c)
 	return c
@@ -101,7 +107,7 @@ func (c *Connection) StartWriter() {
 				fmt.Println("Send Data error: ", err, " conn write exit")
 				return
 			}
-			case data, ok := <-c.msgBufferChan:
+		case data, ok := <-c.msgBufferChan:
 			if ok {
 				if _, err := c.Conn.Write(data); err != nil {
 					fmt.Println("Send Data error: ", err, " conn write exit")
@@ -124,6 +130,7 @@ func (c *Connection) Start() {
 	for {
 		select {
 		case <-c.ExitBuffChan:
+			c.Stop()
 			return
 		}
 	}
@@ -184,4 +191,27 @@ func (c *Connection) SendBufMsg(msgId uint32, data []byte) error {
 	}
 	c.msgBufferChan <- msg
 	return nil
+}
+
+func (c *Connection) SetProperty(key string, value interface{}) {
+	c.propertyLock.Lock()
+	defer c.propertyLock.Unlock()
+	c.property[key] = value
+}
+
+func (c *Connection) GetProperty(key string) (interface{}, error) {
+	c.propertyLock.RLock()
+	defer c.propertyLock.RUnlock()
+
+	if val, ok := c.property[key]; ok {
+		return val, nil
+	}
+	return nil, errors.New("property not found")
+}
+
+func (c *Connection) RemoveProperty(key string) {
+	c.propertyLock.Lock()
+	defer c.propertyLock.Unlock()
+
+	delete(c.property, key)
 }
