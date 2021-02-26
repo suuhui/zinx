@@ -57,8 +57,9 @@ func (c *Connection) StartReader() {
 
 	for {
 		dp := NewDataPack()
-		//读取客户端的头信息
+		//读取客户端的头信息,头信息中只包含两个uint32类型长度的字节
 		headData := make([]byte, dp.GetHeadLen())
+		//ReadFull在conn中读取数据，并且把读取指针移动读取的位数
 		if _, err := io.ReadFull(c.GetTCPConnection(), headData); err != nil {
 			fmt.Println("read msg head error ", err)
 			c.ExitBuffChan <- true
