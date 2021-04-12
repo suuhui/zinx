@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/suuhui/v0.3/ziface"
-	"github.com/suuhui/v0.3/znet"
+	"github.com/suuhui/zinx/v0.3/ziface"
+	"github.com/suuhui/zinx/v0.3/znet"
 )
 
 type PingRouter struct {

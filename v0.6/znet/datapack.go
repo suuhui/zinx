@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"github.com/suuhui/v0.6/utils"
-	"github.com/suuhui/v0.6/ziface"
+	"github.com/suuhui/zinx/v0.6/utils"
+	"github.com/suuhui/zinx/v0.6/ziface"
 	"unsafe"
 )
 

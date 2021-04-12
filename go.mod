@@ -1,3 +1,3 @@
-module github.com/suuhui
+module github.com/suuhui/zinx
 
-go 1.14
+go 1.16

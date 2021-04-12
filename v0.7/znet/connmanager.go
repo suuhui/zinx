@@ -3,7 +3,7 @@ package znet
 import (
 	"errors"
 	"fmt"
-	"github.com/suuhui/v0.7/ziface"
+	"github.com/suuhui/zinx/v0.7/ziface"
 	"strconv"
 	"sync"
 )

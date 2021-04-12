@@ -2,8 +2,8 @@ package znet
 
 import (
 	"fmt"
-	"github.com/suuhui/v0.4/utils"
-	"github.com/suuhui/v0.4/ziface"
+	"github.com/suuhui/zinx/v0.4/utils"
+	"github.com/suuhui/zinx/v0.4/ziface"
 	"net"
 	"time"
 )

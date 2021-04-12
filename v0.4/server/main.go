@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/suuhui/v0.4/ziface"
-	"github.com/suuhui/v0.4/znet"
+	"github.com/suuhui/zinx/v0.4/ziface"
+	"github.com/suuhui/zinx/v0.4/znet"
 	"io"
 	"net"
 )

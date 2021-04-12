@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/suuhui/v0.6/utils"
-	"github.com/suuhui/v0.6/znet"
+	"github.com/suuhui/zinx/v0.6/utils"
+	"github.com/suuhui/zinx/v0.6/znet"
 	"io"
 	"net"
 	"strconv"
